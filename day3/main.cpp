@@ -10,11 +10,13 @@ bool	digitIsLegit(size_t found, size_t digit, int i, std::vector<std::string> ta
 
 	size_t symbol = 0;
 	if (i > 0) {
-		if (found == 0)
+		if (found == 0) {
 			symbol = tab[i - 1].find_first_not_of("012456789.", found); 
-		else
-			symbol = tab[i - 1].find_first_not_of("012456789.", found - 1); 
-		if (symbol <= digit + 1)	
+		}	
+		else {
+			symbol = tab[i - 1].find_first_not_of("012456789.", found - 1); 		
+		}	
+		if (symbol <= found + digit && symbol != std::string::npos)	
 			return true;
 	}	
 	if (found != 0) {
@@ -28,12 +30,12 @@ bool	digitIsLegit(size_t found, size_t digit, int i, std::vector<std::string> ta
 			return true;
 	}
 	size_t symbol2 = 0;
-	if (static_cast<size_t>(i) < tab.size()) {
+	if (static_cast<size_t>(i) < tab.size() - 1) {
 		if (found == 0)
 			symbol2 = tab[i + 1].find_first_not_of("012456789.", found); 
 		else
 			symbol2 = tab[i + 1].find_first_not_of("012456789.", found - 1); 
-		if (symbol2 <= digit + 1)	
+		if (symbol2 <= found + digit && symbol2 != std::string::npos)	
 			return true;
 	}	
 	return false;
@@ -46,15 +48,15 @@ int	lineTotal(std::string & line, int i, std::vector<std::string> tab) {
 	while (found != std::string::npos) {
 		size_t	digit = line.find_first_not_of("0123456789", found) - found;
 		if (digitIsLegit(found, digit, i, tab)) {
-			total += stoi(line.substr(found));
+			int number = stoi(line.substr(found));
+			std::cout << number << std::endl;
+			total += number; 
 		}	
 		found = line.find_first_of("0123456789", found + digit);
 	}
 		return total;
 }
 		
-
-
 int main() {
 
 	std::ifstream ifs;
